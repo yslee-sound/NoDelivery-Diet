@@ -2,8 +2,8 @@
 <resources>
     <!-- Launcher icon soft background tint (reverted to pure white) -->
     <color name="icon_launcher_bg">#FFFFFF</color>
-    <!-- Launcher icon foreground updated to match new asset color -->
-    <color name="icon_launcher_fg">#DD2E44</color>
+    <!-- Launcher/Splash foreground color updated to new brand green -->
+    <color name="icon_launcher_fg">#2DC739</color>
 
     <color name="color_progress_primary">#4CAF50</color>
     <color name="color_progress_track">#E8F5E8</color>

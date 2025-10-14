@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AlcoholicTimer"
+rootProject.name = "NoDelivery Diet"
 include(":app")
