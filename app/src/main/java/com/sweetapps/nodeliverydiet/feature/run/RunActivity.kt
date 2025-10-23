@@ -45,6 +45,7 @@ import androidx.compose.foundation.BorderStroke
 import com.sweetapps.nodeliverydiet.core.util.AppUpdateManager
 import kotlinx.coroutines.launch
 import com.sweetapps.nodeliverydiet.R
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 class RunActivity : BaseActivity() {
 
@@ -180,7 +181,7 @@ private fun RunScreen() {
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-                    border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+                    border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
                 ) {
                     Column(modifier = Modifier.fillMaxWidth().padding(20.dp)) {
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -198,7 +199,7 @@ private fun RunScreen() {
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-                    border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+                    border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
                 ) {
                     Box(modifier = Modifier.fillMaxSize().padding(16.dp), contentAlignment = Alignment.Center) {
                         val labelBoxH = 36.dp; val valueBoxH = 66.dp; val hintBoxH = 20.dp; val gapSmall = 6.dp; val gapMedium = 8.dp
@@ -314,7 +315,7 @@ private fun RunScreen() {
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-                    border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+                    border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
                 ) {
                     Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) { ModernProgressIndicatorSimple(progress = progress) }
                 }

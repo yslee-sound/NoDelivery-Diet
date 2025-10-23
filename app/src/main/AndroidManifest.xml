@@ -22,7 +22,7 @@
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.start.StartActivity"
             android:exported="true"
-            android:theme="@style/Theme.AlcoholicTimer.Splash"
+            android:theme="@style/Theme.NoDeliveryDiet.Splash"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,76 +35,76 @@
             android:name="com.sweetapps.nodeliverydiet.feature.records.RecordsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 모든 기록 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.records.AllRecordsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 레벨 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.level.LevelActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 설정 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 노딜리버리 진행 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.run.RunActivity"
             android:exported="false"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 노딜리버리 종료 확인 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.run.QuitActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 세부 기록 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.detail.DetailActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 별명 편집 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.profile.NicknameEditActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 사용자 기록 추가 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.addrecord.AddRecordActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 앱 정보 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.about.AboutActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
         <!-- 오픈 라이선스 상세 화면 -->
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.about.AboutLicensesActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AlcoholicTimer" />
+            android:theme="@style/Theme.NoDeliveryDiet" />
 
     </application>
 

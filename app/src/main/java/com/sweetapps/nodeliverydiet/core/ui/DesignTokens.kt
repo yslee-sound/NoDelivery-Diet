@@ -4,12 +4,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 /**
- * 앱 전역 디자인 토큰 (라이트 모드 고정 전제)
- * - Elevation: 단순화 (0 / 2 / 4)
- *   ZERO: 완전 평면
- *   CARD (2dp): 일반 카드 / 그룹 / 보조 영역
- *   CARD_HIGH (4dp): 주요 액션 / 주목도 높은 카드 (원형 시작/중지 버튼 포함)
- * 세밀 단계(3dp)는 복잡도 증가 대비 이득이 낮아 제거.
+ * 앱 전역 디자인 토큰
+ * - Elevation: 플랫 기본(0dp), 주목 버튼만 살짝(2dp)
+ *   CARD = 0.dp: 기본 카드/컨테이너는 평면
+ *   CARD_HIGH = 2.dp: 원형 주요 버튼(시작/중지 등)
  */
 object AppAlphas {
     const val SurfaceTint: Float = 0.1f
@@ -17,8 +15,13 @@ object AppAlphas {
 
 object AppElevation {
     val ZERO = 0.dp
-    val CARD = 2.dp
-    val CARD_HIGH = 4.dp
+    val CARD = 0.dp
+    val CARD_HIGH = 2.dp
+}
+
+/** 전역 Border 두께 토큰 */
+object AppBorder {
+    val Hairline = 0.75.dp
 }
 
 /**

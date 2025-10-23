@@ -77,6 +77,10 @@ fun AllRecordsScreen(
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                 )
         ) {
+            // 하단 보정: 상단 여백(16dp)을 네비게이션 바 높이에 추가로 확보
+            val topGap = 16.dp
+            val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            val bottomGap = navBarBottom + topGap
             Column(modifier = Modifier.fillMaxSize()) {
                 Surface(
                     modifier = Modifier
@@ -176,7 +180,7 @@ fun AllRecordsScreen(
                                 .fillMaxSize()
                                 .padding(horizontal = 16.dp),
                             verticalArrangement = Arrangement.spacedBy(0.dp),
-                            contentPadding = PaddingValues(top = 12.dp, bottom = 12.dp)
+                            contentPadding = PaddingValues(top = 16.dp, bottom = bottomGap)
                         ) {
                             items(
                                 items = records,
@@ -238,6 +242,8 @@ fun AllRecordsScreen(
             }
         }
     }
+
+    // ...existing code...
 }
 
 @Composable

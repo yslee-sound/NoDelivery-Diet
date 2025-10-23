@@ -1,6 +1,9 @@
 # AlcoholicTimer 릴리즈 빌드 스크립트
 # 사용법: .\build_release.ps1
 
+# 스크립트 위치로 이동 (공백 경로/임의 작업 디렉터리 안전)
+Set-Location -Path $PSScriptRoot
+
 # 환경변수 설정
 $env:KEYSTORE_PATH = "G:/secure/AlcoholicTimer_Secure/alcoholic-timer-upload.jks"  # 실제 경로로 변경
 $env:KEYSTORE_STORE_PW = "your_keystore_password"  # 실제 비밀번호로 변경
@@ -27,7 +30,7 @@ Write-Host "✅ 키스토어 파일 확인 완료`n" -ForegroundColor Green
 
 # 릴리즈 빌드 실행
 Write-Host "AAB 빌드 시작..." -ForegroundColor Yellow
-.\gradlew.bat clean :app:bundleRelease
+./gradlew.bat clean :app:bundleRelease
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host "`n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" -ForegroundColor Cyan
@@ -45,4 +48,3 @@ if ($LASTEXITCODE -eq 0) {
     Write-Host "`n❌ 빌드 실패!" -ForegroundColor Red
     exit 1
 }
-

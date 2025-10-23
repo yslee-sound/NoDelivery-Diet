@@ -23,6 +23,7 @@ import com.sweetapps.nodeliverydiet.R
 import com.sweetapps.nodeliverydiet.core.ui.AppElevation
 import com.sweetapps.nodeliverydiet.core.ui.BaseActivity
 import com.sweetapps.nodeliverydiet.core.util.Constants
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 class SettingsActivity : BaseActivity() {
     override fun getScreenTitle(): String = "설정"
@@ -42,8 +43,16 @@ fun SettingsScreen() {
     var selectedFrequency by remember { mutableStateOf(initialFrequency) }
     var selectedDuration by remember { mutableStateOf(initialDuration) }
 
+    // 네비게이션 바 하단 보정: 공통 규칙 - 네비게이션 바 높이 + 16dp
+    val topGap = 16.dp
+    val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val bottomGap = navBarBottom + topGap
+
     Column(
-        modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = bottomGap),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SettingsCard(title = "배달 비용", titleColor = colorResource(id = R.color.color_indicator_money)) {
@@ -62,7 +71,7 @@ fun SettingsScreen() {
                 onOptionSelected = { newValue -> selectedFrequency = newValue; sharedPref.edit { putString("selected_frequency", newValue) } }
             )
         }
-        SettingsCard(title = "과식 비율", titleColor = colorResource(id = R.color.color_indicator_hours)) {
+        SettingsCard(title = "과식 습관", titleColor = colorResource(id = R.color.color_indicator_hours)) {
             SettingsOptionGroup(
                 selectedOption = selectedDuration,
                 options = listOf("짧음", "보통", "김"),
@@ -70,7 +79,7 @@ fun SettingsScreen() {
                 onOptionSelected = { newValue -> selectedDuration = newValue; sharedPref.edit { putString("selected_duration", newValue) } }
             )
         }
-        // 하단 Spacer 제거: BaseScreen이 safe area까지 확장
+        // Spacer 제거: 하단 여백은 Column 패딩으로 처리
     }
 }
 
@@ -81,7 +90,7 @@ fun SettingsCard(title: String, titleColor: Color, content: @Composable () -> Un
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD), // lowered from CARD_HIGH
-        border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light)) // added subtle border for depth
+        border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light)) // subtle hairline border
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = title, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = titleColor, modifier = Modifier.padding(bottom = 12.dp))
@@ -98,7 +107,7 @@ fun SettingsOptionItem(isSelected: Boolean, label: String, onSelected: () -> Uni
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = if (isSelected) colorResource(id = R.color.color_accent_blue).copy(alpha = 0.1f) else colorResource(id = R.color.color_bg_card_light)),
-        border = if (isSelected) BorderStroke(2.dp, colorResource(id = R.color.color_accent_blue)) else BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+        border = if (isSelected) BorderStroke(2.dp, colorResource(id = R.color.color_accent_blue)) else BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
     ) {
         Row(modifier = Modifier.fillMaxWidth().padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
             RadioButton(selected = isSelected, onClick = onSelected, colors = RadioButtonDefaults.colors(selectedColor = colorResource(id = R.color.color_accent_blue), unselectedColor = colorResource(id = R.color.color_radio_unselected)))

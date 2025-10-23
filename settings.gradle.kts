@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NoDelivery Diet"
+rootProject.name = "NoDeliveryDiet"
 include(":app")

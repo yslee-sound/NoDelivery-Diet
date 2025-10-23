@@ -187,6 +187,9 @@ private fun AddRecordScreen(
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         contentColor = MaterialTheme.colorScheme.onSurface
     ) { innerPadding ->
+        // 네비게이션 바 하단 인셋 계산(3버튼 내비에서 겹침 방지)
+        val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val bottomPadding = 16.dp + navBarBottom
         Column(
             modifier = Modifier
                 .padding(innerPadding)
@@ -195,9 +198,8 @@ private fun AddRecordScreen(
                 // 화면 배경도 연회색 유지
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .padding(horizontal = 16.dp)
+                .padding(top = 16.dp, bottom = bottomPadding)
         ) {
-            Spacer(Modifier.height(8.dp))
-
             // 시작일 및 시간
             Row(
                 modifier = Modifier
@@ -304,8 +306,6 @@ private fun AddRecordScreen(
                     modifier = Modifier.weight(1f)
                 ) { Text("저장") }
             }
-
-            Spacer(Modifier.height(24.dp))
         }
 
         if (showTargetSheet) {

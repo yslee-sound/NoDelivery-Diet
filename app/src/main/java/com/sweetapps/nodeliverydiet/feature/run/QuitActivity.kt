@@ -44,6 +44,7 @@ import com.sweetapps.nodeliverydiet.core.util.FormatUtils
 import com.sweetapps.nodeliverydiet.feature.start.StartActivity
 import com.sweetapps.nodeliverydiet.core.ui.AppElevation
 import com.sweetapps.nodeliverydiet.R
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 class QuitActivity : BaseActivity() {
     override fun getScreenTitle(): String = getString(R.string.quit_title)
@@ -79,7 +80,7 @@ fun QuitScreen() {
                 shape = RoundedCornerShape(LayoutConstants.CARD_CORNER_RADIUS),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD), // lowered from CARD_HIGH
-                border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light)) // added for depth after elevation reduction
+                border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light)) // hairline for flat depth
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(LayoutConstants.CARD_PADDING),

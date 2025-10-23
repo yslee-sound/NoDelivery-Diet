@@ -36,6 +36,7 @@ import kotlinx.coroutines.delay
 import java.util.Locale
 import androidx.compose.foundation.BorderStroke
 import com.sweetapps.nodeliverydiet.R
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 class LevelActivity : BaseActivity() {
 
@@ -80,17 +81,22 @@ fun LevelScreen() {
 
     // backgroundBrush 제거 (BaseScreen 배경 사용)
 
+    // 하단 보정: 상단 카드와 동일한 여백(16dp)을 네비게이션 바 높이에 추가로 확보
+    val topGap = 16.dp
+    val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val bottomGap = navBarBottom + topGap
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = bottomGap),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         // 변경: float 경과 일수 전달
         CurrentLevelCard(currentLevel = currentLevel, currentDays = levelDays, elapsedDaysFloat = totalElapsedDaysFloat, startTime = startTime)
         LevelListCard(currentLevel = currentLevel, currentDays = levelDays)
-        // 하단 여백 추가 제거 (BaseScreen이 safe area 처리)
+        // 하단 여백은 Column 패딩(bottomGap)으로만 처리 (추가 Spacer 제거)
     }
 }
 
@@ -106,7 +112,7 @@ private fun CurrentLevelCard(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-        border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+        border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
     ) {
         Column(modifier = Modifier.padding(32.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
@@ -251,7 +257,7 @@ private fun LevelListCard(currentLevel: LevelDefinitions.LevelInfo, currentDays:
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-        border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+        border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
     ) {
         Column(modifier = Modifier.padding(24.dp)) {
             Text(
@@ -284,7 +290,8 @@ private fun LevelItem(
     isAchieved: Boolean,
     isNext: Boolean
 ) {
-    val itemElevation = if (isCurrent) AppElevation.ZERO else AppElevation.CARD
+    // Remove inner card shadow to avoid thick gray band inside the parent card
+    val itemElevation = AppElevation.ZERO
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
@@ -296,9 +303,9 @@ private fun LevelItem(
             }
         ),
         border = when {
-            isCurrent -> BorderStroke(1.5.dp, level.color)
+            isCurrent -> BorderStroke(1.dp, level.color)
             isAchieved -> BorderStroke(1.dp, level.color.copy(alpha = 0.6f))
-            else -> BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+            else -> BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
         },
         elevation = CardDefaults.cardElevation(defaultElevation = itemElevation)
     ) {

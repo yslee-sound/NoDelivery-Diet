@@ -42,6 +42,7 @@ import kotlin.math.max
 import kotlin.math.min
 import com.sweetapps.nodeliverydiet.core.ui.AppElevation
 import com.sweetapps.nodeliverydiet.core.ui.LocalRequestGlobalLock
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -208,6 +209,10 @@ fun RecordsScreen(
     }
 
     CompositionLocalProvider(LocalDensity provides Density(LocalDensity.current.density, fontScale = LocalDensity.current.fontScale * fontScale)) {
+        // 하단 보정: 상단 여백(16dp)을 네비게이션 바 높이에 추가로 확보
+        val topGap = 16.dp
+        val navBarBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val bottomGap = navBarBottom + topGap
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -215,7 +220,7 @@ fun RecordsScreen(
         ) {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(bottom = 12.dp),
+                contentPadding = PaddingValues(bottom = bottomGap),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
             ) {
                 item {
@@ -610,7 +615,7 @@ private fun PeriodStatisticsSection(
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-        border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+        border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
     ) {
         Column(
             modifier = Modifier

@@ -17,6 +17,9 @@ PowerShell:
 
 1.2. PowerShell:
 ```
+- powershell.exe (관리자 아님) 실행
+& "C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe" -genkeypair -v -keystore "G:\secure\NoDeliveryDiet\nodeliverydiet-key.jks" -alias nodeliverydiet-alias -keyalg RSA -keysize 4096 -sigalg SHA256withRSA -validity 36500
+
 - 제일 먼저 버전 변경할 것
 app > build.gradle.kts
     versionCode = 2025100800 // YYYYMMDDxx
@@ -30,9 +33,9 @@ Get-ChildItem gradlew.bat
 파일 목록에 gradlew.bat 보이면 OK.
 
 - 서명 환경변수 (네 값으로 넣어, 따옴표 포함)
-$env:KEYSTORE_PATH="G:/secure/AlcoholicTimer_Secure/alcoholic-timer-upload.jks"
+$env:KEYSTORE_PATH="G:/secure/NoDeliveryDiet/nodeliverydiet-key.jks"
 $env:KEYSTORE_STORE_PW="****"
-$env:KEY_ALIAS="alcoholictimeruploadkey"
+$env:KEY_ALIAS="nodeliverydiet-alias"
 $env:KEY_PASSWORD="****"
 
 - 서명 리포트 재확인 (선택이지만 3초)

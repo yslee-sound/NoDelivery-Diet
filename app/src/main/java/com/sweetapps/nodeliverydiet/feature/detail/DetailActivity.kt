@@ -1,4 +1,4 @@
-package com.sweetapps.nodeliverydiet.feature.detail
+﻿package com.sweetapps.nodeliverydiet.feature.detail
 
 import android.app.Activity
 import android.content.Context
@@ -48,8 +48,9 @@ import com.sweetapps.nodeliverydiet.core.util.FormatUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
-import androidx.core.content.edit // SharedPreferences 확장 함수 import 복구
+import androidx.core.content.edit // SharedPreferences ?뺤옣 ?⑥닔 import 蹂듦뎄
 import com.sweetapps.nodeliverydiet.R
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 class DetailActivity : ComponentActivity() {
 
@@ -79,7 +80,7 @@ class DetailActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d(TAG, "===== DetailActivity onCreate 시작 =====")
+        Log.d(TAG, "===== DetailActivity onCreate ?쒖옉 =====")
 
         try {
             val startTime = intent.getLongExtra("start_time", 0L)
@@ -88,10 +89,10 @@ class DetailActivity : ComponentActivity() {
             val actualDays = intent.getIntExtra("actual_days", 0)
             val isCompleted = intent.getBooleanExtra("is_completed", false)
 
-            Log.d(TAG, "수신된 데이터: startTime=$startTime, endTime=$endTime, targetDays=$targetDays, actualDays=$actualDays, isCompleted=$isCompleted")
+            Log.d(TAG, "?섏떊???곗씠?? startTime=$startTime, endTime=$endTime, targetDays=$targetDays, actualDays=$actualDays, isCompleted=$isCompleted")
 
             if (actualDays < 0) {
-                Log.e(TAG, "잘못된 데이터: actualDays=$actualDays")
+                Log.e(TAG, "?섎せ???곗씠?? actualDays=$actualDays")
                 finish()
                 return
             }
@@ -99,7 +100,7 @@ class DetailActivity : ComponentActivity() {
             val safeTargetDays = if (targetDays <= 0) 30f else targetDays
             val safeActualDays = if (actualDays <= 0) 1 else actualDays
 
-            Log.d(TAG, "안전한 값들: targetDays=$safeTargetDays, actualDays=$safeActualDays")
+            Log.d(TAG, "?덉쟾??媛믩뱾: targetDays=$safeTargetDays, actualDays=$safeActualDays")
 
             setContent {
                 AlcoholicTimerTheme(darkTheme = false) {
@@ -113,10 +114,10 @@ class DetailActivity : ComponentActivity() {
                     )
                 }
             }
-            Log.d(TAG, "===== DetailActivity onCreate 완료 =====")
+            Log.d(TAG, "===== DetailActivity onCreate ?꾨즺 =====")
         } catch (e: Exception) {
-            Log.e(TAG, "DetailActivity 초기화 중 오류", e)
-            Log.e(TAG, "오류 스택트레이스: ${e.stackTraceToString()}")
+            Log.e(TAG, "DetailActivity 珥덇린??以??ㅻ쪟", e)
+            Log.e(TAG, "?ㅻ쪟 ?ㅽ깮?몃젅?댁뒪: ${e.stackTraceToString()}")
             finish()
         }
     }
@@ -153,26 +154,10 @@ fun DetailScreen(
 
     val (selectedCost, selectedFrequency, selectedDuration) = Constants.getUserSettings(context)
 
-    val costVal = when(selectedCost) {
-        "저" -> 15000
-        "중" -> 35000
-        "고" -> 50000
-        else -> 35000
-    }
-
-    val freqVal = when(selectedFrequency) {
-        "주 1회 이하" -> 1.0
-        "주 2~3회" -> 2.5
-        "주 4회 이상" -> 5.0
-        else -> 2.5
-    }
-
-    val drinkHoursVal = when(selectedDuration) {
-        "짧음" -> 2
-        "보통" -> 4
-        "김" -> 6
-        else -> 4
-    }
+    // 비용/빈도/소요시간 매핑은 전역 유틸을 사용해 문자열 의존도를 줄입니다.
+    val costVal = Constants.costPerOrder(selectedCost)
+    val freqVal = Constants.frequencyPerWeek(selectedFrequency)
+    val drinkHoursVal = Constants.mealHours(selectedDuration)
 
     val hangoverHoursVal = 5
 
@@ -180,7 +165,7 @@ fun DetailScreen(
     val savedMoney = (exactWeeks * freqVal * costVal).roundToInt()
     val savedHoursExact = (exactWeeks * freqVal * (drinkHoursVal + hangoverHoursVal))
 
-    val achievementRate = ((totalDays / targetDays) * 100.0).let { rate -> if (rate > 100) 100.0 else rate }
+    val achievementRate = ((totalDays / targetDays.toDouble()) * 100.0).coerceAtMost(100.0)
     val lifeExpectancyIncrease = totalDays / 30.0
 
     val density = LocalDensity.current
@@ -188,10 +173,10 @@ fun DetailScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                // 전역 배경을 연회색으로 변경
+                // ?꾩뿭 諛곌꼍???고쉶?됱쑝濡?蹂寃?
                 .background(MaterialTheme.colorScheme.surfaceVariant)
                 .windowInsetsPadding(
-                    // 하단은 전역에서 처리하지 않음: 수평만 적용
+                    // ?섎떒? ?꾩뿭?먯꽌 泥섎━?섏? ?딆쓬: ?섑룊留??곸슜
                     WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                 )
         ) {
@@ -263,7 +248,7 @@ fun DetailScreen(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = AppElevation.CARD),
-                    border = BorderStroke(1.dp, colorResource(id = R.color.color_border_light))
+                    border = BorderStroke(AppBorder.Hairline, colorResource(id = R.color.color_border_light))
                 ) {
                     Column(
                         modifier = Modifier.padding(20.dp)
@@ -395,7 +380,7 @@ fun DetailScreen(
                     )
                 }
 
-                // 하단 여백 축소
+                // ?섎떒 ?щ갚 異뺤냼
                 Spacer(modifier = Modifier.height(8.dp))
             }
 
@@ -422,7 +407,7 @@ fun DetailScreen(
                                 try {
                                     deleteRecord(context, startTime, endTime)
                                 } catch (e: Exception) {
-                                    Log.e("DetailActivity", "삭제 중 오류", e)
+                                    Log.e("DetailActivity", "??젣 以??ㅻ쪟", e)
                                 }
                                 val activity = (context as? DetailActivity)
                                 activity?.setResult(Activity.RESULT_OK)
@@ -454,7 +439,7 @@ private fun deleteRecord(context: Context, startTime: Long, endTime: Long) {
         var removedCount = 0
         for (i in 0 until originalArray.length()) {
             val obj = originalArray.getJSONObject(i)
-            // 저장 시 사용된 camelCase 우선, 혹시 남아있을 수 있는 snake_case fallback
+            // ??????ъ슜??camelCase ?곗꽑, ?뱀떆 ?⑥븘?덉쓣 ???덈뒗 snake_case fallback
             val s = if (obj.has("startTime")) obj.optLong("startTime", -1) else obj.optLong("start_time", -1)
             val e = if (obj.has("endTime")) obj.optLong("endTime", -1) else obj.optLong("end_time", -1)
             if (s == startTime && e == endTime) {
@@ -465,11 +450,12 @@ private fun deleteRecord(context: Context, startTime: Long, endTime: Long) {
         }
         if (removedCount > 0) {
             sharedPref.edit { putString("sobriety_records", newArray.toString()) }
-            Log.d("DetailActivity", "삭제 성공: ${removedCount}개 기록 제거 (start=$startTime, end=$endTime)")
+            Log.d("DetailActivity", "??젣 ?깃났: ${removedCount}媛?湲곕줉 ?쒓굅 (start=$startTime, end=$endTime)")
         } else {
-            Log.w("DetailActivity", "삭제 대상 기록을 찾지 못함 (start=$startTime, end=$endTime)")
+            Log.w("DetailActivity", "??젣 ???湲곕줉??李얠? 紐삵븿 (start=$startTime, end=$endTime)")
         }
     } catch (e: Exception) {
-        Log.e("DetailActivity", "기록 삭제 중 오류", e)
+        Log.e("DetailActivity", "湲곕줉 ??젣 以??ㅻ쪟", e)
     }
 }
+
