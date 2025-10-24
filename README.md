@@ -103,6 +103,7 @@ gradlew.bat clean :app:bundleRelease
 - 개인정보 처리방침: [docs/PRIVACY_POLICY.md](./docs/PRIVACY_POLICY.md)
 - 스토어 메타데이터 템플릿: [docs/PLAY_STORE_METADATA_TEMPLATE.md](./docs/PLAY_STORE_METADATA_TEMPLATE.md)
 - 변경 이력: [CHANGELOG.md](./CHANGELOG.md)
+- (신규) 플랫 UI + Insets/IME 통합 가이드: [docs/FLAT_UI_AND_INSETS_UNIFIED_GUIDE.md](./docs/FLAT_UI_AND_INSETS_UNIFIED_GUIDE.md)
 
 ## 디렉터리 구조 개요
 - `app/` : 애플리케이션 본체(Compose UI, Activity, 유틸)

@@ -41,6 +41,8 @@ import kotlinx.coroutines.launch
 import androidx.core.view.WindowCompat
 import kotlinx.coroutines.delay
 import androidx.compose.ui.input.pointer.*
+import androidx.compose.ui.res.colorResource
+import com.sweetapps.nodeliverydiet.R
 
 // 전역 입력 잠금 요청을 위한 CompositionLocal
 val LocalRequestGlobalLock = compositionLocalOf<(Long) -> Unit> { { _: Long -> } }
@@ -278,8 +280,8 @@ abstract class BaseActivity : ComponentActivity() {
                                     )
                                     // Global subtle divider under app bar
                                     HorizontalDivider(
-                                        thickness = 1.5.dp,
-                                        color = Color(0xFFE0E0E0)
+                                        thickness = AppBorder.Hairline,
+                                        color = colorResource(id = R.color.color_border_light)
                                     )
                                 }
                             }

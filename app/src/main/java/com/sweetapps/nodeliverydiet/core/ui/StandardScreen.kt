@@ -24,8 +24,7 @@ fun StandardScreen(
             .fillMaxSize()
             // 기존 Color.White -> 전역 배경 연회색으로 변경
             .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(LayoutConstants.SCREEN_HORIZONTAL_PADDING)
-            .imePadding(),
+            .padding(LayoutConstants.SCREEN_HORIZONTAL_PADDING),
         verticalArrangement = Arrangement.spacedBy(LayoutConstants.CARD_SPACING),
         content = content
     )
@@ -35,7 +34,7 @@ fun StandardScreen(
 fun StandardScreenWithBottomButton(
     topContent: @Composable ColumnScope.() -> Unit,
     bottomButton: @Composable () -> Unit,
-    imePaddingEnabled: Boolean = true,
+    imePaddingEnabled: Boolean = false,
     // 새로 추가: 배경 위/콘텐츠 아래에 깔릴 장식 레이어
     backgroundDecoration: @Composable BoxScope.() -> Unit = {}
 ) {
