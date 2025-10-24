@@ -20,6 +20,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
 import com.sweetapps.nodeliverydiet.core.ui.BaseActivity
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.asPaddingValues
 
 class NicknameEditActivity : BaseActivity() {
     override fun getScreenTitle(): String = "별명 변경"
@@ -38,11 +42,16 @@ class NicknameEditActivity : BaseActivity() {
 
         LaunchedEffect(Unit) { focusRequester.requestFocus() }
 
+        val navBottom = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val imeBottom = WindowInsets.ime.asPaddingValues().calculateBottomPadding()
+        val effectiveBottom = if (navBottom > imeBottom) navBottom else imeBottom
+        val bottomGap = effectiveBottom + 16.dp
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(24.dp)
-                .imePadding(),
+                .padding(bottom = bottomGap),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = "새로운 별명을 입력해주세요", fontSize = 18.sp, fontWeight = FontWeight.Medium, color = Color.Gray, modifier = Modifier.padding(bottom = 32.dp))
@@ -81,4 +90,3 @@ class NicknameEditActivity : BaseActivity() {
         sharedPref.edit { putString("nickname", nickname) }
     }
 }
-

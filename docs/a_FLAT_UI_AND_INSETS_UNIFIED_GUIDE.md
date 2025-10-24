@@ -5,6 +5,12 @@
 > - 최근 업데이트: 2025-10-24
 > - 변경 요약: 플랫 UI(헤어라인 + 0dp)와 Insets/IME 정책을 하나의 문서로 통합. "하단 여백 소유자 단일화" 원칙과 화면 타입별 결정 트리(A/B/C)를 중심으로 일관된 구현 기준 정리. 금지 조합/체크리스트/스니펫/수용 기준 포함.
 
+## 현재 프로젝트 적용 현황
+- A) 하단 버튼 화면: `StandardScreenWithBottomButton`에서 `effectiveBottom = max(WindowInsets.navigationBars, WindowInsets.ime)`만으로 버튼 패딩/콘텐츠 예약을 처리. Start/Run/Quit 화면에 적용됨.
+- B) 입력(IME) 화면: `NicknameEditActivity`에 권장안(선택 1) 적용 완료. `bottom = max(navBars, IME) + 16.dp`를 단 한 번만 적용하며 `imePadding()`은 사용하지 않음.
+- C) 일반 스크롤/리스트 화면: `RecordsScreen`, `SettingsScreen` 등에서 스크롤 컨테이너에 `bottom = WindowInsets.navigationBars + 16.dp`를 단 한 번만 적용.
+- 금지 조합 준수: imePadding + (navBars + 16dp) 혼용 및 부모/자식/Spacer 중복 하단 여백 미사용.
+
 목표
 - 전 앱 화면의 외곽 스타일(Flat: elevation 0dp + Hairline border)과 Window Insets/IME 처리(Edge-to-Edge, 입력/하단 버튼 대응)를 단일 규칙으로 정리한다.
 - 3버튼/제스처 내비, 키보드(IME) 등장/퇴장, 드로어 등 다양한 상황에서도 하단 여백 과다·겹침 없이 일관된 레이아웃을 유지한다.
@@ -121,4 +127,3 @@ QA 체크리스트
 변경 이력
 - v1.0.0 (2025-10-24)
   - 초판: 플랫 UI + Insets/IME 통합, 소유자 단일화/화면 타입 트리/금지 조합/스니펫/수용 기준/QA 체크 포함
-
