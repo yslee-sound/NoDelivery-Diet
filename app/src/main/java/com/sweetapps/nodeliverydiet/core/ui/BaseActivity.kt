@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,8 @@ import kotlinx.coroutines.delay
 import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.res.colorResource
 import com.sweetapps.nodeliverydiet.R
+import android.view.MotionEvent
+import android.view.View
 
 // 전역 입력 잠금 요청을 위한 CompositionLocal
 val LocalRequestGlobalLock = compositionLocalOf<(Long) -> Unit> { { _: Long -> } }
@@ -144,7 +148,7 @@ abstract class BaseActivity : ComponentActivity() {
             LaunchedEffect(drawerState) {
                 snapshotFlow { Triple(drawerState.isAnimationRunning, drawerState.currentValue, drawerState.targetValue) }
                     .collect { (isAnimating, current, target) ->
-                        // 드로어 ��리기 시작하면 즉시 포커스 해제 + 키보드 숨김 (제스처 오픈 포함)
+                        // 드로어 열리기 시작하면 즉시 포커스 해제 + 키보드 숨김 (제스처 오픈 포함)
                         if (isAnimating || target != DrawerValue.Closed || current != DrawerValue.Closed) {
                             focusManager.clearFocus(force = true)
                             keyboardController?.hide()
@@ -311,20 +315,25 @@ abstract class BaseActivity : ComponentActivity() {
                                     .blur(radius = blurRadius.dp)
                             ) { content() }
 
-                            // 전역 입력 차단 오버레이(설정 화면 제외) + 드로어 가드: 모든 포인터 입력 소비
+                            // 전역 입력 차단 오버레이(설정 화면 제외) + 드로어 가드: 모든 입력 및 접근성 포커스 차단
                             if ((enableGlobalOverlay && globalInputLocked) || drawerInputGuardActive) {
-                                Box(
+                                AndroidView(
                                     modifier = Modifier
                                         .fillMaxSize()
-                                        .pointerInput(drawerInputGuardActive, globalInputLocked) {
-                                            // 활성 시 전체 포인터 이벤트를 소비하여 배경 인터랙션 차단
-                                            while (true) {
-                                                awaitPointerEventScope {
-                                                    val event = awaitPointerEvent()
-                                                    event.changes.forEach { it.consume() }
+                                        .clearAndSetSemantics { },
+                                    factory = { context ->
+                                        View(context).apply {
+                                            // 모든 MotionEvent을 소비하고 포커스를 가질 수 있도록 설정
+                                            isClickable = true
+                                            isFocusable = true
+                                            setOnTouchListener { v, e ->
+                                                if (e.action == MotionEvent.ACTION_UP) {
+                                                    v.performClick()
                                                 }
+                                                true
                                             }
                                         }
+                                    }
                                 )
                             }
                         }
@@ -461,7 +470,7 @@ fun DrawerMenu(
             Surface(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { onItemSelected(title) },
                 shape = RoundedCornerShape(12.dp),
-                color = if (isSelected) AppColors.SurfaceOverlaySoft else Color.Transparent
+                color = if (isSelected) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f) else Color.Transparent
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
@@ -469,7 +478,7 @@ fun DrawerMenu(
                 ) {
                     Surface(
                         shape = CircleShape,
-                        color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = if (isSelected) 0.2f else 0.08f),
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
@@ -507,7 +516,7 @@ fun DrawerMenu(
             Surface(
                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp).clickable { onItemSelected(title) },
                 shape = RoundedCornerShape(12.dp),
-                color = if (isSelected) AppColors.SurfaceOverlaySoft else Color.Transparent
+                color = if (isSelected) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f) else Color.Transparent
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
@@ -515,7 +524,7 @@ fun DrawerMenu(
                 ) {
                     Surface(
                         shape = CircleShape,
-                        color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.2f) else MaterialTheme.colorScheme.primary.copy(alpha = 0.08f),
+                        color = MaterialTheme.colorScheme.primary.copy(alpha = if (isSelected) 0.2f else 0.08f),
                         modifier = Modifier.size(36.dp)
                     ) {
                         Icon(
