@@ -64,6 +64,7 @@ import androidx.compose.ui.draw.alpha
 import com.sweetapps.nodeliverydiet.core.ui.components.AppUpdateDialog
 import androidx.core.graphics.drawable.toDrawable
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
+import com.sweetapps.nodeliverydiet.core.util.UpdateVersionMapper
 import android.graphics.Color as AndroidColor
 
 class StartActivity : BaseActivity() {
@@ -117,8 +118,8 @@ class StartActivity : BaseActivity() {
             // 남은 최소 오버레이 시간 계산 (API<31에서 setContent 지연 후엔 0일 수 있음)
             val elapsed = SystemClock.uptimeMillis() - splashStart
             val initialRemain = (minShowMillis - elapsed).coerceAtLeast(0L)
-            // API 30 이하에서 오버레이는 비활성화하여 이중 스플래시 방지
-            val usesComposeOverlay = false
+            // API 31 이상에서만 Compose 오버레이 사용 (시스템 스플래시 이후 업데이트 체크 표시), API 30 이하는 비활성화
+            val usesComposeOverlay = Build.VERSION.SDK_INT >= 31
             setContent {
                 // 상단 시스템바 패딩은 적용, 하단은 개별 레이아웃에서 처리
                 BaseScreen(applyBottomInsets = false, applySystemBars = true) {
@@ -215,7 +216,9 @@ fun StartScreenWithUpdate(
                     onUpdateAvailable = { info ->
                         // 업데이트 사용 가능: 정보 보관 후 다이얼로그 표시
                         updateInfo = info
-                        availableVersionName = "v${info.availableVersionCode()}"
+                        val code = info.availableVersionCode()
+                        val mapped = UpdateVersionMapper.toVersionName(code)
+                        availableVersionName = mapped ?: "build $code"
                         showUpdateDialog = true
                         isCheckingUpdate = false
                     },
