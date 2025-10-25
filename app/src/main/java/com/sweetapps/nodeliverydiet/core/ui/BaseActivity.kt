@@ -47,6 +47,8 @@ import com.sweetapps.nodeliverydiet.R
 import android.view.MotionEvent
 import android.view.View
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.core.content.edit
 
 // 전역 입력 잠금 요청을 위한 CompositionLocal
 val LocalRequestGlobalLock = compositionLocalOf<(Long) -> Unit> { { _: Long -> } }
@@ -63,7 +65,7 @@ abstract class BaseActivity : ComponentActivity() {
         val resolved = if (stored.isNullOrBlank() || stored == legacy) newDefault else stored
         if (resolved != stored) {
             // 저장된 레거시 값을 새 기본값으로 교체 저장
-            sharedPref.edit().putString("nickname", resolved).apply()
+            sharedPref.edit { putString("nickname", resolved) }
         }
         return resolved
     }
@@ -116,7 +118,7 @@ abstract class BaseActivity : ComponentActivity() {
             // 전역 입력 차단(설정 화면 제외)
             val enableGlobalOverlay = this !is SettingsActivity
             var globalInputLocked by remember { mutableStateOf(false) }
-            var lockDurationMs by remember { mutableStateOf(250L) }
+            var lockDurationMs by remember { mutableLongStateOf(250L) }
             var lockTick by remember { mutableIntStateOf(0) }
 
             val requestGlobalLock: (Long) -> Unit = remember(enableGlobalOverlay) {

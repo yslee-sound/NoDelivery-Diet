@@ -18,6 +18,7 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.install.InstallStateUpdatedListener
 import kotlinx.coroutines.tasks.await
+import androidx.core.content.edit
 
 /**
  * In-App Update 관리 클래스
@@ -249,7 +250,7 @@ class AppUpdateManager(private val activity: ComponentActivity) {
      */
     private fun updateLastCheckTime() {
         val prefs = activity.getSharedPreferences(UPDATE_CHECK_PREFS, Context.MODE_PRIVATE)
-        prefs.edit().putLong(KEY_LAST_UPDATE_CHECK, System.currentTimeMillis()).apply()
+        prefs.edit { putLong(KEY_LAST_UPDATE_CHECK, System.currentTimeMillis()) }
     }
 
     /**
@@ -258,7 +259,7 @@ class AppUpdateManager(private val activity: ComponentActivity) {
     private fun incrementPostponeCount() {
         val prefs = activity.getSharedPreferences(UPDATE_CHECK_PREFS, Context.MODE_PRIVATE)
         val count = prefs.getInt(KEY_UPDATE_POSTPONED_COUNT, 0)
-        prefs.edit().putInt(KEY_UPDATE_POSTPONED_COUNT, count + 1).apply()
+        prefs.edit { putInt(KEY_UPDATE_POSTPONED_COUNT, count + 1) }
     }
 
     /**
@@ -289,6 +290,6 @@ class AppUpdateManager(private val activity: ComponentActivity) {
      */
     fun resetPostponeCount() {
         val prefs = activity.getSharedPreferences(UPDATE_CHECK_PREFS, Context.MODE_PRIVATE)
-        prefs.edit().putInt(KEY_UPDATE_POSTPONED_COUNT, 0).apply()
+        prefs.edit { putInt(KEY_UPDATE_POSTPONED_COUNT, 0) }
     }
 }

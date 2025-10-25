@@ -689,7 +689,7 @@ private fun AutoResizeSingleLineText(
 ) {
     val minSpLocal = 10f
     var style by remember(text) { mutableStateOf(baseStyle) }
-    var tried by remember(text) { mutableStateOf(0) }
+    var tried by remember(text) { mutableIntStateOf(0) }
     Text(
         text = text,
         style = style,

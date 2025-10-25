@@ -1,0 +1,56 @@
+processors:
+  active: true
+
+config:
+  validation: true
+
+build:
+  maxIssues: 0
+  weights: {}
+
+comments:
+  active: true
+  excludes: ['**/build/**']
+
+complexity:
+  active: true
+  TooManyFunctions:
+    thresholdInClasses: 30
+    thresholdInInterfaces: 15
+    thresholdInObjects: 20
+  LongMethod:
+    active: true
+    threshold: 80
+
+style:
+  active: true
+  MagicNumber:
+    active: false
+  WildcardImport:
+    active: false
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+    excludePackageStatements: true
+    excludeImportStatements: true
+    excludeCommentStatements: true
+  ReturnCount:
+    active: false
+  DataClassShouldBeImmutable:
+    active: false
+
+naming:
+  active: true
+  TopLevelPropertyNaming:
+    active: false
+  MatchingDeclarationName:
+    active: false
+
+performance:
+  active: true
+
+potential-bugs:
+  active: true
+  ImplicitDefaultLocale:
+    active: false
+

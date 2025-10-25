@@ -2,8 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Background -->
     <item android:drawable="@color/splash_background" />
-    <!-- Centered foreground icon (pre-23: width/height 속성 사용 불가, gravity만 사용) -->
+    <!-- Centered foreground icon with explicit size (API 23+) -->
     <item
         android:gravity="center"
+        android:width="240dp"
+        android:height="240dp"
         android:drawable="@drawable/splash_app_icon" />
 </layer-list>
+

@@ -59,10 +59,10 @@ fun SettingsScreen() {
     val density = LocalDensity.current
     val gapPx = with(density) { 12.dp.roundToPx() }
     val verticalPaddingPx = with(density) { (8.dp + 8.dp).roundToPx() }
-    var viewportH by remember { mutableStateOf(0) }
-    var costH by remember { mutableStateOf(0) }
-    var freqH by remember { mutableStateOf(0) }
-    var durH by remember { mutableStateOf(0) }
+    var viewportH by remember { mutableIntStateOf(0) }
+    var costH by remember { mutableIntStateOf(0) }
+    var freqH by remember { mutableIntStateOf(0) }
+    var durH by remember { mutableIntStateOf(0) }
     val allowScroll by remember { derivedStateOf { (costH + freqH + durH + gapPx * 2) > viewportH } }
     val listState = rememberLazyListState()
 

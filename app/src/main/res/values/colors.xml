@@ -32,11 +32,6 @@
     <color name="color_text_primary_dark">#424242</color>
     <color name="color_accent_blue">#2196F3</color>
 
-    <!-- Background gradient for StandardScreen -->
-    <color name="color_bg_gradient_start">#F8F9FA</color>
-    <color name="color_bg_gradient_mid">#E3F2FD</color>
-    <color name="color_bg_gradient_end">#ECF6E4</color>
-
     <!-- Splash background (Android 12+ requires a solid color) -->
     <color name="splash_background">#FFFFFF</color>
 </resources>

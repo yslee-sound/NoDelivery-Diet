@@ -33,7 +33,7 @@ fun PeriodSelectionSection(
     val periods = listOf("주", "월", "년", "전체")
 
     // 초간단 디바운스: 너무 빠른 연속 탭 무시
-    var lastClickAt by remember { mutableStateOf(0L) }
+    var lastClickAt by remember { mutableLongStateOf(0L) }
     val debounceMs = 250L
 
     Column(modifier = modifier.fillMaxWidth()) {
