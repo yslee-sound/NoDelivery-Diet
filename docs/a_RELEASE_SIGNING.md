@@ -22,7 +22,7 @@ PowerShell:
 
 - 제일 먼저 버전 변경할 것
 app > build.gradle.kts
-    versionCode = 2025100800 // YYYYMMDDxx
+    versionCode = 2025102500 // YYYYMMDDxx
     versionName = "1.0.2"
 
 - 드라이브 & 디렉터리 이동
