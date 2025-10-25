@@ -46,6 +46,7 @@ import com.sweetapps.nodeliverydiet.core.util.AppUpdateManager
 import kotlinx.coroutines.launch
 import com.sweetapps.nodeliverydiet.R
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
+import androidx.activity.compose.BackHandler
 
 class RunActivity : BaseActivity() {
 
@@ -55,6 +56,12 @@ class RunActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BaseScreen(applyBottomInsets = false) {
+                // 뒤로가기: 종료 확인 화면으로 이동
+                val context = LocalContext.current
+                BackHandler(enabled = true) {
+                    val intent = Intent(context, QuitActivity::class.java)
+                    context.startActivity(intent)
+                }
                 RunScreen()
             }
         }

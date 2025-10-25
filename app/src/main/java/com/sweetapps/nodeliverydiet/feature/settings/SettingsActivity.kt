@@ -29,12 +29,19 @@ import com.sweetapps.nodeliverydiet.core.ui.BaseActivity
 import com.sweetapps.nodeliverydiet.core.util.Constants
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 import androidx.compose.foundation.LocalOverscrollFactory
+import androidx.activity.compose.BackHandler
 
 class SettingsActivity : BaseActivity() {
     override fun getScreenTitle(): String = "설정"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { BaseScreen { SettingsScreen() } }
+        setContent {
+            BaseScreen {
+                // 뒤로가기: 메인 홈으로 복귀
+                BackHandler(enabled = true) { navigateToMainHome() }
+                SettingsScreen()
+            }
+        }
     }
 }
 

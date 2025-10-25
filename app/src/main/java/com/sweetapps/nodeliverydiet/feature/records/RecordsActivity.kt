@@ -14,6 +14,7 @@ import com.sweetapps.nodeliverydiet.core.ui.BaseActivity
 import com.sweetapps.nodeliverydiet.core.model.SobrietyRecord
 import com.sweetapps.nodeliverydiet.feature.detail.DetailActivity
 import com.sweetapps.nodeliverydiet.feature.records.components.RecordsScreen
+import androidx.activity.compose.BackHandler
 
 class RecordsActivity : BaseActivity() {
 
@@ -29,6 +30,9 @@ class RecordsActivity : BaseActivity() {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale = density.fontScale * 0.9f)) {
                 BaseScreen {
+                    // 뒤로가기: 메인 홈으로 복귀
+                    BackHandler(enabled = true) { navigateToMainHome() }
+
                     RecordsScreen(
                         externalRefreshTrigger = refreshTrigger,
                         onNavigateToDetail = { record -> handleCardClick(record) },

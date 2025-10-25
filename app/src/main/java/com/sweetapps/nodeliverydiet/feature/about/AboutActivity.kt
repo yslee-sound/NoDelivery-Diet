@@ -19,13 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sweetapps.nodeliverydiet.core.ui.BaseActivity
 import com.sweetapps.nodeliverydiet.R
+import androidx.activity.compose.BackHandler
 
 class AboutActivity : BaseActivity() {
     override fun getScreenTitle(): String = getString(R.string.about_title)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent { BaseScreen { AboutListScreen(onOpenLicenses = { openLicenses() }) } }
+        setContent {
+            BaseScreen {
+                // 뒤로가기: 메인 홈으로 복귀
+                BackHandler(enabled = true) { navigateToMainHome() }
+                AboutListScreen(onOpenLicenses = { openLicenses() })
+            }
+        }
     }
 
     @Suppress("DEPRECATION")

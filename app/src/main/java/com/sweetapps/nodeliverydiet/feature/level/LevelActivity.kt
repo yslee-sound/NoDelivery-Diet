@@ -37,13 +37,18 @@ import java.util.Locale
 import androidx.compose.foundation.BorderStroke
 import com.sweetapps.nodeliverydiet.R
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
+import androidx.activity.compose.BackHandler
 
 class LevelActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BaseScreen { LevelScreen() }
+            BaseScreen {
+                // 뒤로가기: 메인 홈으로 복귀
+                BackHandler(enabled = true) { navigateToMainHome() }
+                LevelScreen()
+            }
         }
     }
 

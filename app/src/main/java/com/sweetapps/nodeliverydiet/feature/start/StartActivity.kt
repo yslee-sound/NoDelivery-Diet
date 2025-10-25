@@ -65,6 +65,9 @@ import com.sweetapps.nodeliverydiet.core.ui.components.AppUpdateDialog
 import androidx.core.graphics.drawable.toDrawable
 import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 import com.sweetapps.nodeliverydiet.core.util.UpdateVersionMapper
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.ui.window.DialogProperties
 import android.graphics.Color as AndroidColor
 
 class StartActivity : BaseActivity() {
@@ -121,8 +124,13 @@ class StartActivity : BaseActivity() {
             // API 31 이상에서만 Compose 오버레이 사용 (시스템 스플래시 이후 업데이트 체크 표시), API 30 이하는 비활성화
             val usesComposeOverlay = Build.VERSION.SDK_INT >= 31
             setContent {
+                var showExitConfirm by remember { mutableStateOf(false) }
+
                 // 상단 시스템바 패딩은 적용, 하단은 개별 레이아웃에서 처리
                 BaseScreen(applyBottomInsets = false, applySystemBars = true) {
+                    // 뒤로가기: 종료 확인 팝업 표시
+                    BackHandler(enabled = true) { showExitConfirm = true }
+
                     StartScreenWithUpdate(
                         appUpdateManager,
                         demoMode = demoUpdateUi,
@@ -134,6 +142,25 @@ class StartActivity : BaseActivity() {
                             window.setBackgroundDrawable(null)
                         }
                     )
+
+                    if (showExitConfirm) {
+                        AlertDialog(
+                            onDismissRequest = { showExitConfirm = false },
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    showExitConfirm = false
+                                    // 앱 종료
+                                    finishAffinity()
+                                }) { Text(text = stringResource(id = R.string.action_exit)) }
+                            },
+                            dismissButton = {
+                                TextButton(onClick = { showExitConfirm = false }) { Text(text = stringResource(id = R.string.action_cancel)) }
+                            },
+                            title = { Text(text = stringResource(id = R.string.dialog_exit_title)) },
+                            text = { Text(text = stringResource(id = R.string.dialog_exit_message)) },
+                            properties = DialogProperties(dismissOnClickOutside = true, dismissOnBackPress = true)
+                        )
+                    }
                 }
             }
             // 오버레이를 쓰지 않는 내부 네비게이션의 경우, 첫 프레임 직후 배경을 제거

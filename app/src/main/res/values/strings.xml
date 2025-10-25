@@ -88,4 +88,10 @@
     <string name="action_copy">복사</string>
     <string name="toast_copied">주소를 복사했습니다.</string>
 
+    <!-- StartActivity: Exit confirmation dialog -->
+    <string name="action_exit">앱 종료</string>
+    <string name="action_cancel">취소</string>
+    <string name="dialog_exit_title">앱 종료</string>
+    <string name="dialog_exit_message">정말 종료하시겠습니까?</string>
+
 </resources>

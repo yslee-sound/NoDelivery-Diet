@@ -42,11 +42,11 @@ import com.sweetapps.nodeliverydiet.feature.start.StartActivity
 import kotlinx.coroutines.launch
 import androidx.core.view.WindowCompat
 import kotlinx.coroutines.delay
-import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.res.colorResource
 import com.sweetapps.nodeliverydiet.R
 import android.view.MotionEvent
 import android.view.View
+import com.sweetapps.nodeliverydiet.core.ui.AppBorder
 
 // 전역 입력 잠금 요청을 위한 CompositionLocal
 val LocalRequestGlobalLock = compositionLocalOf<(Long) -> Unit> { { _: Long -> } }
@@ -346,21 +346,8 @@ abstract class BaseActivity : ComponentActivity() {
     private fun handleMenuSelection(menuItem: String) {
         when (menuItem) {
             "노딜리버리" -> {
-                val sharedPref = getSharedPreferences("user_settings", MODE_PRIVATE)
-                val startTime = sharedPref.getLong("start_time", 0L)
-                if (startTime > 0) {
-                    if (this !is RunActivity) navigateToActivity(RunActivity::class.java)
-                } else {
-                    if (this !is StartActivity) {
-                        // 드로어 내비게이션: StartActivity 진입 시 스플래시 생략 플래그 전달(API<31)
-                        val intent = Intent(this, StartActivity::class.java).apply {
-                            putExtra("skip_splash", true)
-                        }
-                        startActivity(intent)
-                        @Suppress("DEPRECATION")
-                        overridePendingTransition(0, 0)
-                    }
-                }
+                // 진행 중 여부에 따라 메인 홈(Start/Run)으로 이동
+                navigateToMainHome()
             }
             "기록" -> if (this !is com.sweetapps.nodeliverydiet.feature.records.RecordsActivity) {
                 navigateToActivity(com.sweetapps.nodeliverydiet.feature.records.RecordsActivity::class.java)
@@ -375,7 +362,10 @@ abstract class BaseActivity : ComponentActivity() {
 
     @Suppress("DEPRECATION")
     private fun navigateToActivity(activityClass: Class<*>) {
-        val intent = Intent(this, activityClass)
+        val intent = Intent(this, activityClass).apply {
+            // 드로어 네비게이션: 기존 인스턴스가 있으면 재사용하며 그 위 스택 제거
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
         startActivity(intent)
         overridePendingTransition(0, 0)
     }
@@ -385,6 +375,31 @@ abstract class BaseActivity : ComponentActivity() {
         val intent = Intent(this, NicknameEditActivity::class.java)
         startActivity(intent)
         overridePendingTransition(0, 0)
+    }
+
+    protected fun navigateToMainHome() {
+        val sharedPref = getSharedPreferences("user_settings", MODE_PRIVATE)
+        val startTime = sharedPref.getLong("start_time", 0L)
+        val isRunning = startTime > 0L
+
+        val target = if (isRunning) RunActivity::class.java else StartActivity::class.java
+
+        // 이미 해당 메인 홈이라면 아무것도 하지 않음
+        if ((isRunning && this is RunActivity) || (!isRunning && this is StartActivity)) {
+            return
+        }
+
+        @Suppress("DEPRECATION")
+        val intent = Intent(this, target).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            if (!isRunning) {
+                putExtra("skip_splash", true)
+            }
+        }
+        startActivity(intent)
+        overridePendingTransition(0, 0)
+        // 현재 화면 종료하여 스택 정리
+        finish()
     }
 
     protected abstract fun getScreenTitle(): String

@@ -23,6 +23,7 @@
             android:name="com.sweetapps.nodeliverydiet.feature.start.StartActivity"
             android:exported="true"
             android:theme="@style/Theme.NoDeliveryDiet.Splash"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,7 +63,8 @@
         <activity
             android:name="com.sweetapps.nodeliverydiet.feature.run.RunActivity"
             android:exported="false"
-            android:theme="@style/Theme.NoDeliveryDiet" />
+            android:theme="@style/Theme.NoDeliveryDiet"
+            android:launchMode="singleTask" />
 
         <!-- 노딜리버리 종료 확인 화면 -->
         <activity
